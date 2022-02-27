@@ -1,0 +1,4 @@
+PySide6
+pyqtdarktheme  # there is a problem with system themes when pyside comes from pypi
+python-xlib
+pyyaml
