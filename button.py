@@ -68,6 +68,7 @@ class Button(QtWidgets.QPushButton):
 
         subprocess.Popen(commandSplitted,
                          start_new_session=True,
+                         shell=True,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT,
                          env=env)
