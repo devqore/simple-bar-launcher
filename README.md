@@ -27,6 +27,14 @@ pip install -r requirements
 python main.py
 ```
 
+Run nightly binary
+-------------------
+
+```shell
+sudo wget https://github.com/devqore/simple-bar-launcher/releases/download/nightly/simple-bar-launcher.linux.x86_64.bin -O /usr/local/bin/simple-bar-launcher
+sudo chmod a+x /usr/local/bin/simple-bar-launcher
+/usr/local/bin/simple-bar-launcher
+```
 Sample configuration
 --------------------
 
