@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Build simple-bar-launcher
 on: [push]
 jobs:
   build:
@@ -10,6 +10,8 @@ jobs:
         python-version: '3.10'
         cache: 'pip'
     - run: pip install -r requirements-dev.txt
+    - run: sudo apt update
+    - run: sudo apt install libegl1 -y
     - run: ./freeze.sh
     - uses: actions/upload-artifact@v3
       with:
