@@ -17,28 +17,28 @@ jobs:
     - run: sudo apt install libegl1 libxkbcommon-x11-dev libxcb-render-util0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-image0-dev libxcb-keysyms1-dev -y
     - run: ./freeze.sh
 
-    - name: Create Draft Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: nightly
-        release_name: nightly
-        draft: true
-        prerelease: true
+#    - name: Create Draft Release
+#      id: create_release
+#      uses: actions/create-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        tag_name: nightly
+#        release_name: nightly
+#        draft: true
+#        prerelease: true
 
     - uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: https://uploads.github.com/repos/devqore/simple-bar-launcher/releases/62269293/assets{?name,label}  # id of already created release
         asset_path: dist/simple-bar-launcher
         asset_name: simple-bar-launcher.linux.x86_64.bin
         asset_content_type: application/octet-stream
 
-    - uses: eregon/publish-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        release_id: ${{ steps.create_release.outputs.id }}
+#    - uses: eregon/publish-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        release_id: ${{ steps.create_release.outputs.id }}
