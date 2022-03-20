@@ -35,19 +35,25 @@ class Button(QtWidgets.QPushButton):
         self.setStyleSheet(":hover { background-color: none;}")
 
         # effect to use on hover
-        self.effect = QtWidgets.QGraphicsColorizeEffect()
-        self.setGraphicsEffect(self.effect)
-        self.effect.setColor(QtCore.Qt.gray)
-        self.effect.setStrength(0.3)
-        self.effect.setEnabled(False)
+        self.colorizeEffect = QtWidgets.QGraphicsColorizeEffect()
+        self.setGraphicsEffect(self.colorizeEffect)
+        self.colorizeEffect.setEnabled(False)
 
     def enterEvent(self, event):
-        self.effect.setEnabled(True)
+        self.colorizeEffect.setStrength(0.3)
+        self.colorizeEffect.setColor(QtCore.Qt.gray)
+        self.colorizeEffect.setEnabled(True)
         return super().enterEvent(event)
 
     def leaveEvent(self, event):
-        self.effect.setEnabled(False)
+        self.colorizeEffect.setEnabled(False)
         super().leaveEvent(event)
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            self.colorizeEffect.setColor(QtCore.Qt.white)
+            self.colorizeEffect.setStrength(0.5)
+        super().mousePressEvent(event)
 
     def run(self):
         commandSplitted = shlex.split(self.command)
