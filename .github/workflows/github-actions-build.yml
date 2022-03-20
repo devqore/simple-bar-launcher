@@ -26,7 +26,7 @@ jobs:
         tag_name: nightly
         release_name: nightly
         draft: true
-        prerelease: false
+        prerelease: true
 
     - uses: actions/upload-release-asset@v1.0.1
       env:
@@ -36,3 +36,9 @@ jobs:
         asset_path: dist/simple-bar-launcher
         asset_name: simple-bar-launcher.linux.x86_64.bin
         asset_content_type: application/octet-stream
+
+    - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
