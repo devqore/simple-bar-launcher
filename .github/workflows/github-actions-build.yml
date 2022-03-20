@@ -11,7 +11,7 @@ jobs:
         cache: 'pip'
     - run: pip install -r requirements-dev.txt
     - run: sudo apt update
-    - run: sudo apt install libegl1 -y
+    - run: sudo apt install libegl1 libxkbcommon-x11-dev libxcb-render-util0-dev libxcb-icccm4-dev -y
     - run: ./freeze.sh
     - uses: actions/upload-artifact@v3
       with:
