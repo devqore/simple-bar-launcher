@@ -1,5 +1,8 @@
 name: Build simple-bar-launcher
-on: [push]
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,7 +16,23 @@ jobs:
     - run: sudo apt update
     - run: sudo apt install libegl1 libxkbcommon-x11-dev libxcb-render-util0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-image0-dev libxcb-keysyms1-dev -y
     - run: ./freeze.sh
-    - uses: actions/upload-artifact@v3
+
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: simple-bar-launcher
-        path: dist/simple-bar-launcher
+        tag_name: nightly
+        release_name: nightly
+        draft: true
+        prerelease: false
+
+    - uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/simple-bar-launcher
+        asset_name: simple-bar-launcher.linux.x86_64.bin
+        asset_content_type: application/octet-stream
