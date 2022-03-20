@@ -33,6 +33,7 @@ jobs:
       with:
         tag_name: nightly
         release_name: nightly
+        body: Release created from the latest commit
         draft: true
         prerelease: true
 
