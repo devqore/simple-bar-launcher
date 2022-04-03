@@ -1,7 +1,4 @@
-import os
 import sys
-import shlex
-import subprocess
 from pathlib import Path
 
 from PySide6 import QtWidgets, QtGui, QtCore
@@ -56,25 +53,22 @@ class Button(QtWidgets.QPushButton):
         super().mousePressEvent(event)
 
     def run(self):
-        commandSplitted = shlex.split(self.command)
-        print(f'starting: {commandSplitted}')
+        print(f'starting: {self.command}')
 
         # when using pyinstaller we need to ensure we are restoring original LD_LIBRARY_PATH
         # more details here https://pyinstaller.readthedocs.io/en/stable/runtime-information.html
-        if getattr(sys, 'frozen', True):
-            env = dict(os.environ)
-            lpKey = 'LD_LIBRARY_PATH'
-            lpOrig = env.get(lpKey + '_ORIG')
-            if lpOrig is not None:
-                env[lpKey] = lpOrig
-            else:
-                # This happens when LD_LIBRARY_PATH was not set.
-                # Remove the env var as a last resort:
-                env.pop(lpKey, None)
+        env = QtCore.QProcessEnvironment.systemEnvironment()
 
-        subprocess.Popen(commandSplitted,
-                         start_new_session=True,
-                         shell=True,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT,
-                         env=env)
+        if getattr(sys, 'frozen', True):
+            env.remove('LD_LIBRARY_PATH')
+            if env.contains("LD_LIBRARY_PATH_ORIG"):
+                env.insert("LD_LIBRARY_PATH", env.value("LD_LIBRARY_PATH_ORIG"))
+
+        proc = QtCore.QProcess()
+        proc.setProgram('/bin/sh')
+        proc.setArguments(["-c", self.command])
+        proc.setStandardOutputFile(QtCore.QProcess.nullDevice())
+        proc.setStandardErrorFile(QtCore.QProcess.nullDevice())
+
+        proc.setProcessEnvironment(env)
+        proc.startDetached()
