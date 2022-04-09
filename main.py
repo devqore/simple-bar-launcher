@@ -95,7 +95,11 @@ class MyWidget(QtWidgets.QWidget):
         super().mousePressEvent(event)
 
     def setUpMenu(self):
+        self.menu.addAction("Edit config", self.openEditor)
         self.menu.addAction("Quit", app.quit)
+
+    def openEditor(self):
+        QtCore.QProcess().startDetached('xdg-open', [f"{config.configLocation}"])
 
     def showMenu(self, event):
         self.menu.exec(event.globalPosition().toPoint())
