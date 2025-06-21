@@ -1,7 +1,8 @@
-import sys
 from pathlib import Path
 
 from PySide6 import QtWidgets, QtGui, QtCore
+
+from process import Process
 
 
 class Button(QtWidgets.QPushButton):
@@ -54,21 +55,5 @@ class Button(QtWidgets.QPushButton):
 
     def run(self):
         print(f'starting: {self.command}')
-
-        # when using pyinstaller we need to ensure we are restoring original LD_LIBRARY_PATH
-        # more details here https://pyinstaller.readthedocs.io/en/stable/runtime-information.html
-        env = QtCore.QProcessEnvironment.systemEnvironment()
-
-        if getattr(sys, 'frozen', True):
-            env.remove('LD_LIBRARY_PATH')
-            if env.contains("LD_LIBRARY_PATH_ORIG"):
-                env.insert("LD_LIBRARY_PATH", env.value("LD_LIBRARY_PATH_ORIG"))
-
-        proc = QtCore.QProcess()
-        proc.setProgram('/bin/sh')
-        proc.setArguments(["-c", self.command])
-        proc.setStandardOutputFile(QtCore.QProcess.nullDevice())
-        proc.setStandardErrorFile(QtCore.QProcess.nullDevice())
-
-        proc.setProcessEnvironment(env)
-        proc.startDetached()
+        proc = Process()
+        proc.startDetached(self.command)

@@ -7,6 +7,7 @@ from Xlib import display
 
 from button import Button
 from config import Config
+from process import Process
 
 # fix ctrl+c
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -99,7 +100,8 @@ class MyWidget(QtWidgets.QWidget):
         self.menu.addAction("Quit", app.quit)
 
     def openEditor(self):
-        QtCore.QProcess().startDetached('xdg-open', [f"{config.configLocation}"])
+        process = Process()
+        process.startDetached(f'/usr/bin/xdg-open {config.configLocation}')
 
     def showMenu(self, event):
         self.menu.exec(event.globalPosition().toPoint())
