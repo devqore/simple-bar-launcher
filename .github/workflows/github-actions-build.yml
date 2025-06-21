@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
       with:
-        python-version: '3.10'
+        python-version: '3.13'
         cache: 'pip'
     - run: pip install -r requirements-dev.txt
     - run: sudo apt update
@@ -18,10 +18,11 @@ jobs:
     - run: ./freeze.sh
 
     - name: Drop nigthly relase
-      uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      uses: dev-drprasad/delete-tag-and-release@v1.1
       with:
         delete_release: true
         tag_name: nightly
+        github_token: ''
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
